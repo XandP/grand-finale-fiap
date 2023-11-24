@@ -58,7 +58,7 @@ fun Home(navController: NavController) {
     val gameMessagesImg = remember { mutableStateListOf<String>() }
 
     val retrofit = Retrofit.Builder()
-        .baseUrl("https://store.steampowered.com/")
+        .baseUrl("https://10.0.2.2/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
@@ -101,11 +101,66 @@ fun Home(navController: NavController) {
             override fun onFailure(call: Call<Map<String, Game>>, t: Throwable) {
                 val errorMessage = "API call failed with exception: ${t.message}"
                 gameMessages.add(errorMessage)
+
+
             }
         })
 
         GameScreen2(navController, gameMessagesTitle, gameMessagesDesc, gameMessagesImg)
     }
+
+    val retrofit2 = Retrofit.Builder()
+        .baseUrl("https://store.steampowered.com/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    val apiService2 = retrofit2.create(GameService::class.java)
+
+    val gameIds2 = listOf(
+        730, 1086940, 374320, 271590, 1716740, 105600, 1091500, 289070, 1971870
+    )
+
+
+    gameIds2.forEach { appId ->
+        val call = apiService2.fetchGameDetails(appId)
+
+
+        call.enqueue(object : Callback<Map<String, Game>> {
+            override fun onResponse(call: Call<Map<String, Game>>, response: Response<Map<String, Game>>) {
+                if (response.isSuccessful) {
+                    val gameResponseMap = response.body()
+                    if (gameResponseMap != null && gameResponseMap.containsKey(appId.toString())) {
+                        val gameResponse = gameResponseMap[appId.toString()]
+                        if (gameResponse != null) {
+                            val gameData = gameResponse.data
+                            val gameName = gameData.name
+                            val gameDescription = gameData.short_description
+                            val header_image = gameData.header_image
+
+                            gameMessagesTitle.add(gameName)
+                            gameMessagesDesc.add(gameDescription)
+                            gameMessagesImg.add(header_image)
+                        }
+                    }
+                }
+
+                else {
+                    val errorMessage = "API call failed with code ${response.code()}"
+                    gameMessages.add(errorMessage)
+                }
+            }
+
+            override fun onFailure(call: Call<Map<String, Game>>, t: Throwable) {
+                val errorMessage = "API call failed with exception: ${t.message}"
+                gameMessages.add(errorMessage)
+
+
+            }
+        })
+
+        GameScreen2(navController, gameMessagesTitle, gameMessagesDesc, gameMessagesImg)
+    }
+
 }
 
 
