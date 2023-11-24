@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MyGameList</string>
+    <string name="login">Login</string>
+    <string name="subtitle">Please, provide your information</string>
+    <string name="email">Enter your e-mail</string>
+    <string name="emailError">Email is required</string>
+    <string name="password">Enter your password</string>
+    <string name="enter">Enter</string>
+</resources>

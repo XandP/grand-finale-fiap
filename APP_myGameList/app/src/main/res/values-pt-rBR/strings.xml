@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">MyGameList</string>
+    <string name="login">Login</string>
+    <string name="subtitle">Informe seus dados</string>
+    <string name="email">Digite seu e-mail</string>
+    <string name="emailError">E-mail é obrigatório</string>
+    <string name="password">Digite sua senha</string>
+    <string name="enter">Entrar</string>
+</resources>
